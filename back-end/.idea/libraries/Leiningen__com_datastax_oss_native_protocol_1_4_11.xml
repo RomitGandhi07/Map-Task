@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.datastax.oss/native-protocol:1.4.11">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/datastax/oss/native-protocol/1.4.11/native-protocol-1.4.11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

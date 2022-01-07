@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.datastax.oss/java-driver-shaded-guava:25.1-jre-graal-sub-1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/datastax/oss/java-driver-shaded-guava/25.1-jre-graal-sub-1/java-driver-shaded-guava-25.1-jre-graal-sub-1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

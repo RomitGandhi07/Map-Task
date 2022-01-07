@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: cc.qbits/hayt:4.1.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/cc/qbits/hayt/4.1.0/hayt-4.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

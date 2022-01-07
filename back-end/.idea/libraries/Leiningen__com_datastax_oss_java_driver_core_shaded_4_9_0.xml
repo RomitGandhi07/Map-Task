@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: com.datastax.oss/java-driver-core-shaded:4.9.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/datastax/oss/java-driver-core-shaded/4.9.0/java-driver-core-shaded-4.9.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

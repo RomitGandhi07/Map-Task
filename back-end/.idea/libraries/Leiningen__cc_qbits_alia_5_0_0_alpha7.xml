@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: cc.qbits/alia:5.0.0-alpha7">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/cc/qbits/alia/5.0.0-alpha7/alia-5.0.0-alpha7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
