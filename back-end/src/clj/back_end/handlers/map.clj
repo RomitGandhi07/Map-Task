@@ -1,5 +1,5 @@
 (ns back-end.handlers.map
-  )
+  (:require [back-end.db.map :refer [get-all-places]]))
 
 ; Haversine formula
 ; a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -17,12 +17,22 @@
         a (+ (* (Math/sin (/ dlat 2)) (Math/sin (/ dlat 2))) (* (Math/sin (/ dlon 2)) (Math/sin (/ dlon 2)) (Math/cos lat1) (Math/cos lat2)))]
     (* R 2 (Math/asin (Math/sqrt a)))))
 
-;(haversine {:lat 23.022505
-;            :lng 72.5713621}
-;           {:lat 23.0668884
-;            :lng 72.5086395})
-
 (defn find-nearby-places
-  [req]
-  {:status 200
-   :body {:message "Ok"}})
+  [{{{:keys [lat lng]} :body} :parameters}]
+  (try
+    (let [places (get-all-places)
+          places-with-km (mapv (fn [p]
+                                 (assoc p :distance (haversine
+                                                      {:lat (Double/parseDouble (:lat p))
+                                                       :lng (Double/parseDouble (:lng p))}
+                                                      {:lat (Double/parseDouble lat)
+                                                       :lng (Double/parseDouble lng)})))
+                               places)
+          filter-places-by-km (filter (fn [p]
+                                        (< (:distance p) 50)) places-with-km)]
+      {:status 200
+       :body {:message "Ok"
+              :data filter-places-by-km}})
+    (catch Exception e
+      {:status 500
+       :body {:error "Something went wrong... Please try again"}})))

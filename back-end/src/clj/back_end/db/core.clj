@@ -19,8 +19,9 @@
   [table file-name]
   (println (str "COPY " table " FROM '" file-name "' WITH DELIMITER=',' AND HEADER=TRUE;"))
   (println (.exists (clojure.java.io/file file-name)))
-  (alia/execute @session (str "COPY " table " FROM '" file-name "' WITH DELIMITER=',' AND HEADER=TRUE;"))
-  ;(alia/execute @session
-  ;              (alia/prepare @session (str "COPY " table " FROM ? WITH DELIMITER=',' AND HEADER=TRUE;"))
-  ;              {:values [file-name]})
+  (alia/execute @session (str "COPY " table " FROM '" file-name "' WITH HEADER=TRUE;"))
   )
+
+(defn select-statement
+  [statement]
+  (alia/execute @session statement))

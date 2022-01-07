@@ -2,7 +2,8 @@
   (:require
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
-   [front-end.events :as events]
+   [front-end.events]
+   [front-end.subs]
    [front-end.config :as config]
    [front-end.routes :as routes]))
 
@@ -31,6 +32,6 @@
     (rdom/render [root] root-el)))
 
 (defn init []
-  (re-frame/dispatch-sync [::events/initialize-db])
+  (re-frame/dispatch-sync [:initialize-db])
   (dev-setup)
   (mount-root))

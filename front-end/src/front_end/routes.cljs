@@ -50,7 +50,8 @@
    ["map"
     {:name      :routes/map
      :view      maps/show-map
-     :link-text "Map"}]
+     :link-text "Map"
+     :controllers [{:start (fn [_] (rf/dispatch [:start-loading]))}]}]
    ])
 
 (def router

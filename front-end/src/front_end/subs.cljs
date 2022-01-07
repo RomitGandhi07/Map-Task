@@ -1,8 +1,13 @@
 (ns front-end.subs
   (:require
-   [re-frame.core :as re-frame]))
+   [re-frame.core :as rf]))
 
-(re-frame/reg-sub
- ::name
+(rf/reg-sub
+ :name
  (fn [db]
    (:name db)))
+
+(rf/reg-sub
+ :loading
+ (fn [db]
+   (:loading db)))

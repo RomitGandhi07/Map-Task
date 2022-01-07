@@ -1,8 +1,15 @@
 (ns back-end.db.cassandra
-  (:require [back-end.db.core :refer [bulk-insert-using-csv]]))
+  (:require [qbits.hayt :refer :all]
+            [back-end.db.core :refer [insert-statement bulk-insert-using-csv]]))
 
 (defn insert-bulk-data-using-csv
   [file]
   (bulk-insert-using-csv
     "cities"
     file))
+
+(defn insert-bulk-data
+  [data]
+  (doseq [d data]
+    (insert-statement (insert :cities
+                              (values d)))))

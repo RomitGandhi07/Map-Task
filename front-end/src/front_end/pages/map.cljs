@@ -2,6 +2,7 @@
   (:require [reagent.dom :as rdom]
             [reagent.core :as reagent]
             ["bingmaps-react" :default BingMapsReact]
+            [re-frame.core :as rf]
             [front-end.components.loader :refer [loader]]))
 
 ;; (defn home-render []
@@ -40,24 +41,90 @@
   ;;    )
   ;;   [:div
   ;;    "Location permission didn't exist"])
-
-  [:> BingMapsReact {"bingMapsKey" "Ah6Onfkpjfr6HCEuVcuu2aoR9GJ75uGwKMBv4cbO-LUADDH5OZSQHuH0qyhedcDU"
-                     "height" "500px"
-                     "viewOptions" {"center" {"latitude" 23.022505
-                                              "longitude" 72.5713621}}
-                     "pushPins" [{"center" {"latitude" 23.02
-                                            "longitude" 72.57}
-                                  "options" {"title" "Mt. Everest"}}
-                                 {"center" {"latitude" 23.022505
-                                            "longitude" 72.5713621}
-                                  "options" {"title" "You are Here"
-                                             "color" "red"}}]}]
+(let [location-permission-access (reagent/atom false)
+          loading (rf/subscribe [:loading])]
+  (fn []
+    [:<>
+     (if @loading
+       [loader]
+       [:h1
+        "Loading complete"])
+;;      (if (.-geolocation js/navigator)
+;;        (do
+;;          @location-permission-access
+;;          [:div "Hi"]
+;; )
+;;        [:div
+;;         "Oops Your browser didn't support location permission please check your browser version"])
+     ]))
+  ;; (let [loading (rf/subscribe [:loading])]
+  ;;   [:<>
+  ;;    (when @loading
+  ;;      [loader])
+  ;;    (if (.-geolocation js/navigator)
+  ;;      (.getCurrentPosition (.-geolocation js/navigator)
+  ;;                           (fn [pos]
+  ;;                             (rf/dispatch [:stop-loading])
+  ;;                             [:div.demo
+  ;;                              [:> BingMapsReact {"bingMapsKey" "Ah6Onfkpjfr6HCEuVcuu2aoR9GJ75uGwKMBv4cbO-LUADDH5OZSQHuH0qyhedcDU"
+  ;;                                                 "height" "500px"
+  ;;                                                 "viewOptions" {"center" {"latitude" 23.022505
+  ;;                                                                          "longitude" 72.5713621}}
+  ;;                                                 "pushPins" [{"center" {"latitude" 23.02
+  ;;                                                                        "longitude" 72.57}
+  ;;                                                              "options" {"title" "Mt. Everest"}}
+  ;;                                                             {"center" {"latitude" 23.022505
+  ;;                                                                        "longitude" 72.5713621}
+  ;;                                                              "options" {"title" "You are Here"
+  ;;                                                                         "color" "red"}}]}]])
+  ;;                           (fn [_]
+  ;;                             (rf/dispatch [:stop-loading])
+  ;;                             (js/console.log "Location permission denied")
+  ;;                             [:div
+  ;;                              "Location permission is compulsory, you denied the permission"]))
+  ;;      [:div
+  ;;       "Oops Your browser didn't support location permission please check your browser version"])])
   ;;[loader]
-
-  ;; [:div
-  ;;  [:iframe {:width 500
-  ;;            :height 400
-  ;;            :frameBorder 0
-  ;;            :src "https://www.bing.com/maps/embed?h=400&w=500&cp=23.149830673947775~72.51731872558594&lvl=11&typ=d&sty=r&src=SHELL&FORM=MBEDV8"
-  ;;            :scrolling "no"}]]
   )
+
+
+
+
+              ;; (.getCurrentPosition (.-geolocation js/navigator)
+              ;;                      (fn [pos]
+              ;;                        (reset! location-permission-access true)
+              ;;                        (js/console.log "Here")
+              ;;                        (rf/dispatch [:stop-loading])
+              ;;                        [:div.demo
+              ;;                         [:> BingMapsReact {"bingMapsKey" "Ah6Onfkpjfr6HCEuVcuu2aoR9GJ75uGwKMBv4cbO-LUADDH5OZSQHuH0qyhedcDU"
+              ;;                                            "height" "500px"
+              ;;                                            "viewOptions" {"center" {"latitude" 23.022505
+              ;;                                                                     "longitude" 72.5713621}}
+              ;;                                            "pushPins" [{"center" {"latitude" 23.02
+              ;;                                                                   "longitude" 72.57}
+              ;;                                                         "options" {"title" "Mt. Everest"}}
+              ;;                                                        {"center" {"latitude" 23.022505
+              ;;                                                                   "longitude" 72.5713621}
+              ;;                                                         "options" {"title" "You are Here"
+              ;;                                                                    "color" "red"}}]}]])
+              ;;                      (fn [_]
+              ;;                        (reset! location-permission-access true)
+              ;;                        (rf/dispatch [:stop-loading])
+              ;;                        (js/console.log "Location permission denied")
+              ;;                        [:div
+              ;;                         "Location permission is compulsory, you denied the permission"]))
+
+;; (defn map-mount [this]
+;;   (js/console.log "Here")
+;;   ;; (.getCurrentPosition (.-geolocation js/navigator)
+;;   ;;                       (fn [pos]
+;;   ;;                         [:div
+;;   ;;                          "Permission granted"])
+;;   ;;                      (fn [_]
+;;   ;;                        [:div
+;;   ;;                         "Permission not granted"]))
+;;   [:h1 "Hello"])
+
+;; (defn show-map []
+;;   (reagent/create-class {:reagent-render [:div]
+;;                          :component-did-mount map-mount}))
