@@ -7,5 +7,5 @@
    {:swagger {:tags ["map"]}}
 
    ["/find-nearby-places" {:post {:summary "Find nearby places of current location"
-                                 :parameters {:body {:lat string?, :lng string?}}
-                                 :handler map-handlers/find-nearby-places}}]])
+                                  :parameters {:body {:lat string?, :lng string? :range string?}}
+                                  :handler map-handlers/find-nearby-places}}]])

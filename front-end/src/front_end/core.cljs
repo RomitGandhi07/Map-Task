@@ -1,8 +1,10 @@
 (ns front-end.core
   (:require
+   [day8.re-frame.http-fx]
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
    [front-end.events]
+   [front-end.events.map]
    [front-end.subs]
    [front-end.config :as config]
    [front-end.routes :as routes]))

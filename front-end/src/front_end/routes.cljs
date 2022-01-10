@@ -51,7 +51,9 @@
     {:name      :routes/map
      :view      maps/show-map
      :link-text "Map"
-     :controllers [{:start (fn [_] (rf/dispatch [:start-loading]))}]}]
+     :controllers [{:start (fn [_] 
+                             (rf/dispatch [:init-map-data])
+                             (rf/dispatch [:start-loading]))}]}]
    ])
 
 (def router

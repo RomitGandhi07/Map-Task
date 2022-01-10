@@ -10,9 +10,12 @@
 		"bingmaps-react": "^1.2.10",
 		"core-js": "^3.20.2",
 		"google-map-react": "^2.1.10",
+		"i": "^0.3.7",
+		"npm": "^8.3.0",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
-		"react-loader-spinner": "^4.0.0"
+		"react-loader-spinner": "^4.0.0",
+		"react-rangeslider": "^2.2.0"
 	},
 	"devDependencies": {
 		"shadow-cljs": "2.16.8"
