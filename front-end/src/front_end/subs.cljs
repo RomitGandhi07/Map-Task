@@ -28,3 +28,8 @@
  :location-range
  (fn [db]
    (:location-range db)))
+
+(rf/reg-sub
+ :nearby-places
+ (fn [db]
+   (:nearby-places db)))

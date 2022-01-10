@@ -22,24 +22,20 @@
   (try
     (let [places (get-all-places)
           places-with-km (mapv (fn [p]
-                                 (assoc p :distance (haversine
-                                                      {:lat (Double/parseDouble (:lat p))
-                                                       :lng (Double/parseDouble (:lng p))}
-                                                      {:lat (Double/parseDouble lat)
-                                                       :lng (Double/parseDouble lng)})))
+                                 (assoc p :distance (Double/parseDouble
+                                                      (format "%.2f"
+                                                              (haversine
+                                                                {:lat (Double/parseDouble (:lat p))
+                                                                 :lng (Double/parseDouble (:lng p))}
+                                                                {:lat (Double/parseDouble lat)
+                                                                 :lng (Double/parseDouble lng)})))))
                                places)
-          filter-places-by-km (filter (fn [p]
-                                        (< (:distance p) (Integer/parseInt range))) places-with-km)]
+          filter-places-by-km (sort-by :distance
+                               (filter (fn [p]
+                                        (< (:distance p) (Integer/parseInt range))) places-with-km))]
       {:status 200
        :body {:message "Ok"
               :data filter-places-by-km}})
     (catch Exception e
       {:status 500
        :body {:error "Something went wrong... Please try again"}})))
-
-
-;(some (fn [p]
-;        (if (:current p)
-;          p)) [{:a 1}
-;                       {:b 2}
-;                       {:current true}])

@@ -19,4 +19,9 @@
  (fn [db]
    (assoc db :loading false)))
 
+(re-frame/reg-event-db
+ :http-failure
+ (fn [db [_ resp]]
+   (assoc db :error resp)))
+
 
