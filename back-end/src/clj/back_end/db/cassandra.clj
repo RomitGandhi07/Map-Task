@@ -11,5 +11,5 @@
 (defn insert-bulk-data
   [data]
   (doseq [d data]
-    (insert-statement (insert :cities
+    (insert-statement (insert :properties
                               (values d)))))

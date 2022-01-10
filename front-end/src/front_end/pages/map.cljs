@@ -43,57 +43,66 @@
   "This function is responsible for creating the range slider"
   []
   (let [location-range @(rf/subscribe [:location-range])]
-    [:div {:style {:width "50%"}}
+    [:div {:style {:display "flex"
+                   :justify-content "center"
+                   :flex-direction "column"
+                   :align-items "center"}}
      [:h3 "Range"]
      [:h5 (str location-range "Km")]
-     [:input.form-range {:type "range"
-                         :min "10"
-                         :max "150"
-                         :step "10"
+     [:input.form-range {:style {:width "40%"}
+                         :type "range"
+                         :value location-range
+                         :min "1"
+                         :max "5"
                          :on-change (fn [event]
                                       (rf/dispatch-sync [:update-location-range (-> event .-target .-value)])
                                       (rf/dispatch [:find-nearby-places]))}]]))
 
 (defn show-place [place]
-  [:div.d-flex.mt-4
+  [:div.d-flex
    [:div
     [:img {:src "./images/location.png"
            :height "30"
            :width "30"}]]
-   [:div.m-2
+   [:div.mx-3
     [:h6
      {:style {:cursor "pointer"}
       :on-click (fn [_]
                   (rf/dispatch [:update-view-options {:lat (:lat place)
                                                       :lng (:lng place)}]))}
-     (:city place)]
+     (:title place)]
     [:p (str (:city place) "," (:distance place) "Km")]]
    [:hr]])
 
 (defn show-places-listing
   []
   (let [nearby-places @(rf/subscribe [:nearby-places])]
-    [:div {:style {:margin-right "2%"
+    [:div.mt-1 {:style {:margin-right "2%"
                    :margin-left "2%"
-                   :overflow "auto"
+                   :max-width "15%"
                    :height "100%"}}
-     [:h3.text-center "List"]
-     (if-not (empty? nearby-places)
-       (for [place nearby-places]
-         ^{:key (:id place)}
-         [show-place place])
-       [:p "No places"])]))
+     [:h4.text-center (str "Properties (" (count nearby-places) ")")]
+     [:hr]
+     [:div {:style {:max-height "70vh"
+                    :overflow "auto"}}
+      (if-not (empty? nearby-places)
+        (for [place nearby-places]
+          ^{:key (:id place)}
+          [show-place place])
+        [:p "No places"])]]))
 
 (defn show-bing-map
   [user-location pushpins]
-  [:div.mt-4
+  [:div.d-flex.justify-content-center.align-items-center
    ;;(pr-str user-location)
   ;;  (pr-str pushpins)
    [:> BingMapsReact {"bingMapsKey" "Ah6Onfkpjfr6HCEuVcuu2aoR9GJ75uGwKMBv4cbO-LUADDH5OZSQHuH0qyhedcDU"
                       "viewOptions" {"center" {"latitude" (get-in user-location [:view-options :lat])
-                                               "longitude" (get-in user-location [:view-options :lng])}}
+                                               "longitude" (get-in user-location [:view-options :lng])}
+                                     "zoom" 16}
                       "mapOptions" {"navigationBarMode" "square"}
-                      "height" "500px"
+                      "height" "70vh"
+                      "width" "60vw"
                       "pushPinsWithInfoboxes" pushpins}]])
 
 (defn show-map []
@@ -105,13 +114,14 @@
        [loader])
      (if user-location
        (if (and (:permission user-location) pushpins)
-         [:div {:height "400px"}
+         [:div
+          [range-slider]
           [:div.d-flex.flex-row
            [show-places-listing]
-           [:div.flex-grow-1
+           [:div.flex-grow-1 {:style {:max-width "80vw"}}
             [:h3.text-center "Map View"]
-            [show-bing-map user-location pushpins]]]
-          [range-slider]]
+            [:hr]
+            [show-bing-map user-location pushpins]]]]
          [:div
           "Location permission is required and you must give the location permission."])
        (if (and (.-geolocation js/navigator) loading)

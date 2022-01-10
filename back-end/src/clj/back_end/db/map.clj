@@ -4,7 +4,7 @@
 
 (defn get-all-places
   []
-  (select-statement (select :cities)))
+  (select-statement (select :properties)))
 
 
 

@@ -25,6 +25,7 @@
        :body {:message "Ok"
               :data (take 5 data)}})
     (catch Exception e
+      ;;(println e)
       {:status 500
        :body {:error "Something went wrong... Please try again"}})))
 

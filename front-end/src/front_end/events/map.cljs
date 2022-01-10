@@ -8,7 +8,7 @@
    (-> db
        (dissoc :user-location)
        (dissoc :pushpins)
-       (assoc :location-range 50))))
+       (assoc :location-range 1))))
 
 ;; (rf/reg-event-db
 ;;  :create-current-location-pushpin
@@ -66,8 +66,8 @@
          resp-pushpins (mapv (fn [pushpin]
                                         {"center" {"latitude" (:lat pushpin)
                                                    "longitude" (:lng pushpin)}
-                                         "options" {"title" (:city pushpin)
-                                                    "description" (str (:city pushpin) "," (:admin_name pushpin) "," (:country pushpin))}})
+                                         "options" {"title" (:title pushpin)
+                                                    "description" (:description pushpin)}})
                                       (:data resp))]
      (-> db
          (assoc :pushpins (conj resp-pushpins current-pushpin))
