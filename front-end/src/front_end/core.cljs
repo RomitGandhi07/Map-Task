@@ -5,6 +5,7 @@
    [re-frame.core :as re-frame]
    [front-end.events]
    [front-end.events.map]
+   [front-end.events.property]
    [front-end.subs]
    [front-end.config :as config]
    [front-end.routes :as routes]))

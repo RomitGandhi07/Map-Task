@@ -5,7 +5,8 @@
               [reitit.frontend.easy :as rfe]
               [reitit.frontend.controllers :as rfc]
               [front-end.views :as views]
-              [front-end.pages.map :as maps]))
+              [front-end.pages.map :as maps]
+              [front-end.pages.property :as property]))
 
 ;; Subs
 
@@ -53,7 +54,16 @@
      :link-text "Map"
      :controllers [{:start (fn [_] 
                              (rf/dispatch [:init-map-data])
-                             (rf/dispatch [:start-loading]))}]}]
+                             (rf/dispatch [:start-loading :map]))}]}]
+   ["property/:id"
+    {:name :routes/property
+     :view property/property-info
+     :link-text "Property Info"
+     :controllers [{:parameters {:path [:id]}
+                    :start (fn [{:keys [path]}]
+                             (let [{id :id} path]
+                               (rf/dispatch [:start-loading :property-info])
+                               (rf/dispatch [:fetch-property-by-id id])))}]}]
    ])
 
 (def router
@@ -63,7 +73,8 @@
 
 (defn on-navigate [new-match]
   (when new-match
-    (rf/dispatch [:navigated new-match])))
+    (rf/dispatch [:navigated new-match])
+    (rf/dispatch [:clear-loading-error])))
 
 (defn init-routes! []
   (rfe/start!

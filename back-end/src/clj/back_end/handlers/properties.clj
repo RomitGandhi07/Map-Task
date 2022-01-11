@@ -1,5 +1,5 @@
-(ns back-end.handlers.map
-  (:require [back-end.db.map :refer [get-all-places]]))
+(ns back-end.handlers.properties
+  (:require [back-end.db.properties :refer [get-all-properties get-property-by-id]]))
 
 ; Haversine formula
 ; a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -17,10 +17,10 @@
         a (+ (* (Math/sin (/ dlat 2)) (Math/sin (/ dlat 2))) (* (Math/sin (/ dlon 2)) (Math/sin (/ dlon 2)) (Math/cos lat1) (Math/cos lat2)))]
     (* R 2 (Math/asin (Math/sqrt a)))))
 
-(defn find-nearby-places
+(defn find-nearby-properties
   [{{{:keys [lat lng range]} :body} :parameters}]
   (try
-    (let [places (get-all-places)
+    (let [places (get-all-properties)
           places-with-km (mapv (fn [p]
                                  (assoc p :distance (Double/parseDouble
                                                       (format "%.2f"
@@ -34,8 +34,27 @@
                                (filter (fn [p]
                                         (< (:distance p) (Integer/parseInt range))) places-with-km))]
       {:status 200
-       :body {:message "Ok"
+       :body {:message "ok"
               :data filter-places-by-km}})
     (catch Exception e
       {:status 500
        :body {:error "Something went wrong... Please try again"}})))
+
+(defn fetch-property-by-id
+  [{{{:keys [id]} :path} :parameters}]
+  (let [property (get-property-by-id id)]
+    (if (empty? property)
+      {:status 404
+       :body {:error "Property with given id not found"}}
+      {:status 200
+       :body {:message "ok"
+              :data (first property)}})))
+
+(comment
+  (def memoize-haversine (memoize haversine))
+
+  (memoize-haversine {:lat 19.075984
+                      :lng 72.877656}
+                     {:lat 20.0
+                      :lng 72.877656})
+  )

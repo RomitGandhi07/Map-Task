@@ -10,18 +10,28 @@
    db/default-db))
 
 (re-frame/reg-event-db
+ :clear-loading-error
+ (fn [db _]
+   (-> db
+       (assoc :loading {})
+       (assoc :error {}))))
+
+(re-frame/reg-event-db
  :start-loading
- (fn [db]
-   (assoc db :loading true)))
+ (fn [db [_ path]]
+   (assoc-in db [:loading path] true)))
 
 (re-frame/reg-event-db
  :stop-loading
- (fn [db]
-   (assoc db :loading false)))
+ (fn [db [_ path]]
+   (assoc-in db [:loading path] false)))
 
 (re-frame/reg-event-db
  :http-failure
- (fn [db [_ resp]]
-   (assoc db :error resp)))
+ (fn [db [_ path resp]]
+   (-> db
+       (assoc-in [:error path] {:status (:status resp)
+                                :error (:error (:response resp))})
+       (assoc-in [:loading path] false))))
 
 

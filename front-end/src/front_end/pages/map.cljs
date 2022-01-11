@@ -33,7 +33,7 @@
     (rf/dispatch-sync [:location-permission-granted {:lat lat
                                                      :lng lng
                                                      :permission true}])
-    (rf/dispatch [:find-nearby-places])))
+    (rf/dispatch [:find-nearby-properties])))
 
 (defn permission-denied []
 
@@ -43,20 +43,19 @@
   "This function is responsible for creating the range slider"
   []
   (let [location-range @(rf/subscribe [:location-range])]
-    [:div {:style {:display "flex"
-                   :justify-content "center"
-                   :flex-direction "column"
-                   :align-items "center"}}
-     [:h3 "Range"]
-     [:h5 (str location-range "Km")]
-     [:input.form-range {:style {:width "40%"}
-                         :type "range"
-                         :value location-range
-                         :min "1"
-                         :max "5"
-                         :on-change (fn [event]
-                                      (rf/dispatch-sync [:update-location-range (-> event .-target .-value)])
-                                      (rf/dispatch [:find-nearby-places]))}]]))
+    [:div
+     [:div.range-slider
+      [:h3 "Range"]
+      [:h5 (str location-range "Km")]
+      [:input.form-range {:style {:width "40%"}
+                          :type "range"
+                          :value location-range
+                          :min "1"
+                          :max "5"
+                          :on-change (fn [event]
+                                       (rf/dispatch-sync [:update-location-range (-> event .-target .-value)])
+                                       (rf/dispatch [:find-nearby-properties]))}]]]
+    ))
 
 (defn show-place [place]
   [:div.d-flex
@@ -65,12 +64,16 @@
            :height "30"
            :width "30"}]]
    [:div.mx-3
-    [:h6
+    [:a {:href (str "/#/property/" (:id place))
+         :target "_blank"
+         :style {:text-decoration "none"
+                 :color "black"}}
+     [:h6
      {:style {:cursor "pointer"}
-      :on-click (fn [_]
+      :onMouseOver (fn [_]
                   (rf/dispatch [:update-view-options {:lat (:lat place)
                                                       :lng (:lng place)}]))}
-     (:title place)]
+     (:title place)]]
     [:p (str (:city place) "," (:distance place) "Km")]]
    [:hr]])
 
@@ -89,7 +92,7 @@
         (for [place nearby-places]
           ^{:key (:id place)}
           [show-place place])
-        [:p "No places"])]]))
+        [:p "No properties"])]]))
 
 (defn show-bing-map
   [user-location pushpins]
@@ -106,10 +109,13 @@
                       "pushPinsWithInfoboxes" pushpins}]])
 
 (defn show-map []
-  (let [loading @(rf/subscribe [:loading])
+  (let [loading @(rf/subscribe [:map-loading])
         user-location @(rf/subscribe [:user-location])
         pushpins @(rf/subscribe [:pushpins])]
     [:<>
+    ;;  (pr-str loading)
+    ;;  (pr-str user-location)
+    ;;  (pr-str pushpins)
      (when loading
        [loader])
      (if user-location
