@@ -4,7 +4,7 @@
    [reagent.dom :as rdom]
    [re-frame.core :as re-frame]
    [front-end.events]
-   [front-end.events.map]
+   [front-end.events.properties]
    [front-end.events.property]
    [front-end.subs]
    [front-end.config :as config]

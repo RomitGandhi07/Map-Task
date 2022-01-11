@@ -54,3 +54,15 @@
  :property-info
  (fn [db]
    (:property-info db)))
+
+
+;; # Properties Subs
+(rf/reg-sub
+ :view-options
+ (fn [db]
+   (:view-options db)))
+
+(rf/reg-sub
+ :properties
+ (fn [db]
+   (:properties db)))

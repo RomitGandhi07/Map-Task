@@ -13,6 +13,10 @@
        [:p 
         [:b "Description:"]
         (:description info)]]
+      [:div.col-12.mt-4
+       [:p
+        [:b "Pincode:"]
+        (:zipcode info)]]
       (when-not (empty? (:locality info))
         [:div.col-12
          [:p

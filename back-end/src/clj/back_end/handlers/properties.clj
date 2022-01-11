@@ -1,5 +1,7 @@
 (ns back-end.handlers.properties
-  (:require [back-end.db.properties :refer [get-all-properties get-property-by-id]]))
+  (:require [back-end.db.properties :refer [get-all-properties
+                                            get-property-by-id
+                                            get-property-by-zipcode]]))
 
 ; Haversine formula
 ; a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -42,13 +44,30 @@
 
 (defn fetch-property-by-id
   [{{{:keys [id]} :path} :parameters}]
-  (let [property (get-property-by-id id)]
-    (if (empty? property)
-      {:status 404
-       :body {:error "Property with given id not found"}}
+  (try
+    (let [property (get-property-by-id id)]
+      (if (empty? property)
+        {:status 404
+         :body {:error "Property with given id not found"}}
+        {:status 200
+         :body {:message "ok"
+                :data (first property)}}))
+    (catch Exception e
+      {:status 500
+       :body {:error "Something went wrong... Please try again"}})))
+
+(defn search-properties
+  [{{{:keys [zipcode]} :body} :parameters}]
+  (try
+    (let [properties (get-property-by-zipcode zipcode)]
       {:status 200
        :body {:message "ok"
-              :data (first property)}})))
+              :data (if (empty? properties)
+                      []
+                      properties)}})
+    (catch Exception e
+      {:status 500
+       :body {:message "Something went wrong...Please try again"}})))
 
 (comment
   (def memoize-haversine (memoize haversine))

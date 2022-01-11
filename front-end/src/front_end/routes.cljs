@@ -6,7 +6,8 @@
               [reitit.frontend.controllers :as rfc]
               [front-end.views :as views]
               [front-end.pages.map :as maps]
-              [front-end.pages.property :as property]))
+              [front-end.pages.property :as property]
+              [front-end.pages.properties :as properties]))
 
 ;; Subs
 
@@ -55,6 +56,14 @@
      :controllers [{:start (fn [_] 
                              (rf/dispatch [:init-map-data])
                              (rf/dispatch [:start-loading :map]))}]}]
+   
+   ["search"
+    {:name      :routes/search
+     :view      properties/search-properties
+     :link-text "Search Properties"
+     :controllers [{:start (fn [_]
+                             (rf/dispatch [:init-map-data]))}]}]
+
    ["property/:id"
     {:name :routes/property
      :view property/property-info

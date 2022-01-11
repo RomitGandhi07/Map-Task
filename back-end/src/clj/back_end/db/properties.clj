@@ -11,6 +11,10 @@
   (select-statement (select :properties
                             (where {:id id}))))
 
+(defn get-property-by-zipcode
+  [zipcode]
+  (select-statement (str "SELECT * FROM properties WHERE zipcode='" zipcode "';")))
+
 
 
 
