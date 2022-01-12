@@ -6,7 +6,8 @@
 
 (defn create-indexes
   []
-  (alia/execute @session "CREATE INDEX IF NOT EXISTS zipcode ON properties(zipcode);"))
+  (alia/execute @session "CREATE INDEX IF NOT EXISTS zipcode ON properties(zipcode);")
+  (alia/execute @session "CREATE INDEX IF NOT EXISTS bedroom_num ON properties(bedroom_num);"))
 
 (defn create-session
   []

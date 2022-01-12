@@ -21,7 +21,11 @@
         [:div.col-12
          [:p
           [:b "Locality:"]
-          (:locality info)]])]]))
+          (:locality info)]])
+      [:div.col-12
+       [:p
+        [:b "Bedrooms:"]
+        (:bedroom_num info)]]]]))
 
 (defn property-info
   []

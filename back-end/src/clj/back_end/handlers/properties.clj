@@ -1,7 +1,7 @@
 (ns back-end.handlers.properties
   (:require [back-end.db.properties :refer [get-all-properties
                                             get-property-by-id
-                                            get-property-by-zipcode]]))
+                                            get-properties-by-search-values]]))
 
 ; Haversine formula
 ; a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
@@ -57,17 +57,18 @@
        :body {:error "Something went wrong... Please try again"}})))
 
 (defn search-properties
-  [{{{:keys [zipcode]} :body} :parameters}]
+  [{{data :body} :parameters}]
   (try
-    (let [properties (get-property-by-zipcode zipcode)]
+    (let [properties (get-properties-by-search-values data)]
       {:status 200
        :body {:message "ok"
               :data (if (empty? properties)
                       []
                       properties)}})
     (catch Exception e
+      (println e)
       {:status 500
-       :body {:message "Something went wrong...Please try again"}})))
+       :body {:error "Something went wrong...Please try again"}})))
 
 (comment
   (def memoize-haversine (memoize haversine))
@@ -76,4 +77,6 @@
                       :lng 72.877656}
                      {:lat 20.0
                       :lng 72.877656})
+
+  (merge {:a "1"} {:a (Integer/parseInt "1")})
   )

@@ -2,9 +2,9 @@
   (:require [reagent.dom :as rdom]
             [reagent.core :as reagent]
             [re-frame.core :as rf]
-            [front-end.components.loader :refer [loader]]
+            [front-end.components.toastNotification :refer [toast-notification]]
             [front-end.components.bingmap :refer [render-bing-map]]
-            ))
+            [front-end.components.loader :refer [loader]]))
 ;; MAP
 
 (defn show-bing-map
@@ -40,26 +40,29 @@
                       (rf/dispatch [:update-view-options {:lat (:lat property)
                                                           :lng (:lng property)}]))}
       (:title property)]]
-    [:p (str (:city property) "," (:distance property) "Km")]]
+    [:p (:city property)]]
    [:hr]])
 
 (defn show-properties-listing
   "This is to display the properties listing"
   []
-  (let [nearby-places @(rf/subscribe [:properties])]
+  (let [loading @(rf/subscribe [:properties-loading])
+        nearby-places @(rf/subscribe [:properties])]
     [:div.col-4.mt-1 {:style {:margin-right "2%"
                         :margin-left "2%"
                         :max-width "20%"
                         :height "100%"}}
      [:h4.text-center "Properties"]
      [:hr]
-     [:div {:style {:max-height "70vh"
-                    :overflow "auto"}}
-      (if-not (empty? nearby-places)
-        (for [place nearby-places]
-          ^{:key (:id place)}
-          [show-property place])
-        [:p "No properties"])]]))
+     (if loading
+       [loader]
+       [:div {:style {:max-height "70vh"
+                      :overflow "auto"}}
+        (if-not (empty? nearby-places)
+          (for [place nearby-places]
+            ^{:key (:id place)}
+            [show-property place])
+          [:p "No properties"])])]))
 
 ;; PERMISSION GRANTED & DENINED
 
@@ -93,26 +96,40 @@
 (defn search-bar
   "This function is responsibe for displaying the search bar"
   []
-  (let [search-value (reagent/atom {:zipcode nil})]
+  (let [search-value (reagent/atom {:zipcode ""
+                                    :bedroom_num ""})]
     (fn []
       [:div.row
-       [:div.col-6.d-flex.justify-content-center
-        [:div
-         (pr-str @search-value)
+      ;;  (pr-str @search-value)
+       [:div.mt-2.col-12
+        [:div.d-flex
          [:input.form-control {:type :num
                                :placeholder "Enter zipcode"
                                :minLength 6
                                :maxLength 6
                                :on-change (fn [e]
                                             (swap! search-value assoc-in [:zipcode] (-> e .-target .-value)))}]
-         [:button.btn-btn-primary {:on-click (fn [e]
+         [:select.mx-2.form-select
+          {:on-change (fn [e]
+                        (swap! search-value assoc-in [:bedroom_num] (-> e .-target .-value)))}
+          [:option {:selected true
+                    :disabled true
+                    :value ""} "Bedrooms"]
+          [:option {:value ""} "Any"]
+          [:option {:value "1"} "1"]
+          [:option {:value "2"} "2"]
+          [:option {:value "3"} "3"]
+          [:option {:value "4"} "4"]
+          [:option {:value "5"} "5"]]
+         [:button.mx-2.btn-btn-primary {:on-click (fn [e]
                                                (.preventDefault e)
                                                (rf/dispatch [:search-properties @search-value]))}
-          "Search"]
-         [:button.btn-btn-primary {:on-click (fn [e]
-                                               (.preventDefault e)
-                                               (display-properties-nearby-user-location))}
-          "Locate & Search"]]]])))
+          [:i.fas.fa-search]]
+         [:button.mx-2.btn-btn-primary {:type :button
+                                        :on-click (fn [e]
+                                                    (.preventDefault e)
+                                                    (display-properties-nearby-user-location))}
+          [:i.fas.fa-search-location]]]]])))
 
 ;; MAIN VIEW
 
@@ -120,10 +137,11 @@
   "This is the main view"
   []
   [:div.container
+   [toast-notification]
    [:div.row
     [:div.col-6
      [search-bar]]]
-   [:div.row
+   [:div.row.mt-4
     [:div.col-12
      [:div.d-flex
       [show-properties-listing]

@@ -11,9 +11,16 @@
   (select-statement (select :properties
                             (where {:id id}))))
 
-(defn get-property-by-zipcode
-  [zipcode]
-  (select-statement (str "SELECT * FROM properties WHERE zipcode='" zipcode "';")))
+(defn get-properties-by-search-values
+  [data]
+  (println data)
+  (select-statement (select :properties
+                            (where (into {} (filter (fn [v]
+                                                      (println (empty? (second v)))
+                                                      (not (empty? (second v))))
+                                                      data)))
+                            (allow-filtering)))
+  )
 
 
 

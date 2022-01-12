@@ -12,6 +12,11 @@
  (fn [db]
    (:loading db)))
 
+(rf/reg-sub
+ :toast
+ (fn [db]
+   (:toast db)))
+
 ;; MAP Subs
 
 (rf/reg-sub
@@ -57,6 +62,11 @@
 
 
 ;; # Properties Subs
+(rf/reg-sub
+ :properties-loading
+ (fn [db]
+   (get-in db [:loading :properties])))
+
 (rf/reg-sub
  :view-options
  (fn [db]

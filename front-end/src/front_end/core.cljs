@@ -8,7 +8,8 @@
    [front-end.events.property]
    [front-end.subs]
    [front-end.config :as config]
-   [front-end.routes :as routes]))
+   [front-end.routes :as routes]
+   ["react-toastify" :refer [ToastContainer]]))
 
 
 (defn main-page
@@ -21,6 +22,10 @@
 (defn root []
   [:div#root
    {:style {:width "100vw"}}
+  [:> ToastContainer
+   {:position "top-center"
+    :autoClose 3000
+    :closeOnClick true}]
    [main-page]])
 
 (defn dev-setup []

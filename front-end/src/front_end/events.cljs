@@ -32,6 +32,12 @@
    (-> db
        (assoc-in [:error path] {:status (:status resp)
                                 :error (:error (:response resp))})
-       (assoc-in [:loading path] false))))
+       (assoc-in [:loading path] false)
+       (assoc :toast {:error (get-in resp [:response :error])}))))
+
+(re-frame/reg-event-db
+ :clear-toast-notification
+ (fn [db]
+   (dissoc db :toast)))
 
 
