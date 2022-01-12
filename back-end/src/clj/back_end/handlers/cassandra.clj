@@ -20,11 +20,15 @@
                     io/reader
                     csv/read-csv
                     csv-data->maps)
+          ;data (mapv (fn [v]
+          ;             (assoc v :zipcode (str (rand-nth (range 400001 400051)))))
+          ;           data)
           _ (insert-bulk-data data)]
       {:status 200
        :body {:message "Ok"
               :data (take 5 data)}})
     (catch Exception e
+      (println e)
       {:status 500
        :body {:error "Something went wrong... Please try again"}})))
 
@@ -46,3 +50,4 @@
 ;      (println e)
 ;      {:status 500
 ;       :body {:error "Something went wrong... Please try again"}})))
+(repeat [1 3 4])

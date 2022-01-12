@@ -12,7 +12,17 @@
  (fn [db]
    (:loading db)))
 
+(rf/reg-sub
+ :toast
+ (fn [db]
+   (:toast db)))
+
 ;; MAP Subs
+
+(rf/reg-sub
+ :map-loading
+ (fn [db]
+   (get-in db [:loading :map])))
 
 (rf/reg-sub
  :user-location
@@ -33,3 +43,36 @@
  :nearby-places
  (fn [db]
    (:nearby-places db)))
+
+;; Property Subs
+(rf/reg-sub
+ :property-info-loading
+ (fn [db]
+   (get-in db [:loading :property-info])))
+
+(rf/reg-sub
+ :property-info-error
+ (fn [db]
+   (get-in db [:error :property-info])))
+
+(rf/reg-sub
+ :property-info
+ (fn [db]
+   (:property-info db)))
+
+
+;; # Properties Subs
+(rf/reg-sub
+ :properties-loading
+ (fn [db]
+   (get-in db [:loading :properties])))
+
+(rf/reg-sub
+ :view-options
+ (fn [db]
+   (:view-options db)))
+
+(rf/reg-sub
+ :properties
+ (fn [db]
+   (:properties db)))
