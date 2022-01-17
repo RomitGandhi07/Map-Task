@@ -14,5 +14,7 @@ profiles.clj
 
 /node_modules
 /log
+/.idea
+/.vscode
 
 
