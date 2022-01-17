@@ -37,7 +37,7 @@
                                         (< (:distance p) (Integer/parseInt range))) places-with-km))]
       {:status 200
        :body {:message "ok"
-              :data filter-places-by-km}})
+              :data (vec filter-places-by-km)}})
     (catch Exception e
       {:status 500
        :body {:error "Something went wrong... Please try again"}})))
@@ -64,7 +64,7 @@
        :body {:message "ok"
               :data (if (empty? properties)
                       []
-                      properties)}})
+                      (vec properties))}})
     (catch Exception e
       (println e)
       {:status 500

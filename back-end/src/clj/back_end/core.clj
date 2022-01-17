@@ -7,7 +7,8 @@
     [clojure.tools.cli :refer [parse-opts]]
     [clojure.tools.logging :as log]
     [mount.core :as mount]
-    [back-end.db.core :refer [create-session]])
+    [back-end.db.core :refer [create-session]]
+    [back-end.ldap.core :refer [create-ldap-connection]])
   (:gen-class))
 
 ;; log uncaught exceptions in threads
@@ -58,4 +59,5 @@
 
 (defn -main [& args]
   (start-app args)
-  (create-session))
+  (create-session)
+  (create-ldap-connection))

@@ -11,7 +11,8 @@
     [ring.util.http-response :refer :all]
     [clojure.java.io :as io]
     [back-end.routes.cassandra :as cassandra-routes]
-    [back-end.routes.properties :as property-routes]))
+    [back-end.routes.properties :as property-routes]
+    [back-end.routes.auth :as auth-routes]))
 
 (defn service-routes []
   ["/api"
@@ -71,6 +72,7 @@
 
    (cassandra-routes/create-cassandra-routes)
    (property-routes/create-property-routes)
+   (auth-routes/create-auth-routes)
 
    ["/files"
     {:swagger {:tags ["files"]}}

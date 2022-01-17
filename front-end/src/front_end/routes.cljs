@@ -7,7 +7,8 @@
               [front-end.views :as views]
               [front-end.pages.map :as maps]
               [front-end.pages.property :as property]
-              [front-end.pages.properties :as properties]))
+              [front-end.pages.properties :as properties]
+              [front-end.pages.registration :as registration]))
 
 ;; Subs
 
@@ -49,6 +50,10 @@
     {:name      :routes/about
      :view      views/about-page
      :link-text "About"}]
+   ["signup"
+    {:name      :routes/signup
+     :view      registration/registration
+     :link-text "Home"}]
    ["map"
     {:name      :routes/map
      :view      maps/show-map

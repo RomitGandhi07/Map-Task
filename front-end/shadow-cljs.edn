@@ -6,6 +6,7 @@
 
  :dependencies
  [[reagent "1.1.0"]
+  [fork "2.4.2"]
   [re-frame "1.2.0"]
   [cljs-ajax "0.8.4"]
   [day8.re-frame/http-fx "0.2.3"]
